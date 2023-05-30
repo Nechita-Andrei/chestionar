@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 data = pd.read_csv("dog_breeds_extended.csv")
 
-categorical_cols = ['size', 'allergy', 'trainability', 'energy', 'kids', 'grooming']
+categorical_cols = ['allergy', 'size', 'grooming', 'energy', 'kids', 'trainability']
 
 preprocessor = ColumnTransformer(
     transformers=[('cat', OneHotEncoder(), categorical_cols)],
@@ -31,7 +31,7 @@ def predict_breed():
     kids = request.json['kids']
     grooming = request.json['grooming']
 
-    user_data = [[size, allergy, trainability, energy, kids, grooming]]
+    user_data = [[allergy, size, grooming, energy, kids, trainability]]
     user_data_encoded = preprocessor.transform(pd.DataFrame(user_data, columns=categorical_cols))
     breed = rf.predict(user_data_encoded)
 
